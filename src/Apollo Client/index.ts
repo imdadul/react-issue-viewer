@@ -47,8 +47,8 @@ const initializeApolloCache = (): InMemoryCache => {
 
 export const initializeApolloClient: InitializeApolloClient = () => {
   const cache = initializeApolloCache();
-  const API_URL = process.env.API_URL;
-  const TOKEN = "bearer " + process.env.TOKEN;
+  const API_URL = process.env.REACT_APP_API_URL;
+  const TOKEN = "bearer " + process.env.REACT_APP_TOKEN;
 
   const client =  new ApolloClient({
         // defaultOptions: {
