@@ -8,19 +8,14 @@ import {
 import { InMemoryCache } from "@apollo/client/cache";
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
-export type ProcessEnvType = "test" | "production" | "development";
 
-export type InitializeApolloClient = (
-  env: ProcessEnvType,
-  customHttpLinkUri?: string
-) => {
+export type InitializeApolloClient = () => {
   client: ApolloClient<NormalizedCacheObject>;
   cache: InMemoryCache;
 };
 
-const initializeApolloCache = (env: ProcessEnvType): InMemoryCache => {
+const initializeApolloCache = (): InMemoryCache => {
   const cache = new InMemoryCache({
-    addTypename: env !== "test",
     typePolicies: {
       Query: {
         fields: {
@@ -50,16 +45,12 @@ const initializeApolloCache = (env: ProcessEnvType): InMemoryCache => {
   return cache;
 };
 
-export const initializeApolloClient: InitializeApolloClient = (
-  env,
-  customHttpLinkUri
-) => {
-  const cache = initializeApolloCache(env);
+export const initializeApolloClient: InitializeApolloClient = () => {
+  const cache = initializeApolloCache();
   const API_URL = process.env.API_URL;
   const TOKEN = "bearer " + process.env.TOKEN;
 
-  const client = ["production", "development"].includes(env)
-    ? new ApolloClient({
+  const client =  new ApolloClient({
         // defaultOptions: {
         //   watchQuery: {
         //     fetchPolicy: "cache-and-network",
@@ -80,18 +71,17 @@ export const initializeApolloClient: InitializeApolloClient = (
             return {
               headers: {
                 ...headers,
-                Authorization: TOKEN || "",
+                Authorization: TOKEN,
               },
             };
           }),
           new HttpLink({
-            uri: customHttpLinkUri || API_URL,
+            uri: API_URL,
             credentials: "same-origin",
           }),
         ]),
         cache,
       })
-    : null;
 
   return {
     client,
