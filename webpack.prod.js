@@ -1,4 +1,4 @@
-const { DefinePlugin } = require('webpack');
+const { EnvironmentPlugin } = require('webpack');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const path = require('path');
@@ -11,8 +11,6 @@ module.exports = merge(common, {
         port: 9000
     },
     plugins: [
-        new DefinePlugin({
-            "process.env": {},
-        }),
+        new EnvironmentPlugin(['REACT_APP_API_URL', 'REACT_APP_TOKEN'])
     ],
 });
