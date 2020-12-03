@@ -125,16 +125,18 @@ const IssueListTable: FunctionComponent<IssueTableProp> = ({
           )}
         />
       </Table>
-      {data.search.pageInfo.hasNextPage && (
-        <Button
-          size={"large"}
-          type="primary"
-          onClick={() => fetchMore(data.search.pageInfo.endCursor)}
-          icon={<RightCircleFilled />}
-        >
-          Load More
-        </Button>
-      )}
+      <div className="h-center">
+        {data.search.pageInfo.hasNextPage && (
+          <Button
+            size={"large"}
+            type="primary"
+            onClick={() => fetchMore(data.search.pageInfo.endCursor)}
+            icon={<RightCircleFilled />}
+          >
+            Load More
+          </Button>
+        )}
+      </div>
     </React.Fragment>
   );
 };

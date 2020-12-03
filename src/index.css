@@ -1,13 +1,31 @@
-body {
-    margin: 50;
-    padding: 50;
+.container {
+  max-width: 1050px;
+  margin: auto;
 }
 
-div {
-    background-color: teal;
+.search-and-select {
+  padding: 15px 15px 0 15px;
+  background-color: #fafafa;
 }
 
-img {
-    width: 640px;
-    height: 426px;
+.h-center {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+}
+
+.details-header {
+  padding-top: 15px;
+}
+
+.back-button {
+  padding-right: 15px;
+}
+
+.details-header-title-area {
+  display: flex;
+}
+
+.details-header-title-area .back-button {
+  margin-right: 15px;
 }

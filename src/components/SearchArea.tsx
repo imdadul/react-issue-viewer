@@ -42,14 +42,14 @@ const SearchArea: FunctionComponent<SearchAreaTypes> = ({
   };
 
   return (
-    <React.Fragment>
+    <div className="search-and-select">
       <Search
         placeholder="Search text in title/body"
         onSearch={onSearch}
         onChange={onChange}
         enterButton="Search"
         value={tempSearchState}
-        style={{ width: "30%" }}
+        style={{ width: "30%", marginRight: "15px" }}
       />
       <Select
         defaultValue={issueState}
@@ -60,7 +60,7 @@ const SearchArea: FunctionComponent<SearchAreaTypes> = ({
         <Option value="OPEN">Open</Option>
         <Option value="CLOSED">Closed</Option>
       </Select>
-    </React.Fragment>
+    </div>
   );
 };
 

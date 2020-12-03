@@ -4,6 +4,9 @@ import { useParams } from "react-router-dom";
 import { IssueRouteParam } from "../../App";
 import { useQuery } from "@apollo/client";
 import { Col, Divider, Row, Skeleton } from "antd";
+import { LeftOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
+import { Button } from "antd";
 import {
   ISSUE_DETAILS_QUERY,
   IssueDetailsParam,
@@ -12,7 +15,9 @@ import {
 import { Issue as IssueSchemaType } from "../../SchemaTypes/types";
 import parse from "html-react-parser";
 import { timeSince } from "../../utils/helpers/date";
+
 export type IssueDetail = IssueSchemaType;
+
 export const IssueDetails: FunctionComponent = () => {
   const { issueId } = useParams<IssueRouteParam>();
   const { data, error, loading } = useQuery<
@@ -27,17 +32,33 @@ export const IssueDetails: FunctionComponent = () => {
   if (error) {
     return <>Data loading error</>;
   }
-  return <DetailsComponent issue={data.repository.issue}></DetailsComponent>;
+  return <DetailsComponent issue={data.repository.issue}/>;
 };
 
 const DetailsComponent: FunctionComponent<{ issue: IssueDetail }> = ({
   issue,
 }) => {
+  const { goBack } = useHistory();
+
   return (
     <Row>
-      <Col span={8}>
-        <span>#{issue.number}</span> created by {issue.author.login}{" "}
-        {timeSince(new Date(issue.createdAt))} ago
+      <Col span={24} className="details-header">
+        <div className="details-header-title-area">
+          <Button
+            className="back-button"
+            size="large"
+            type="primary"
+            icon={<LeftOutlined />}
+            onClick={goBack}
+          >
+            back
+          </Button>
+          <h1>{issue.title}</h1>
+        </div>
+        <i>
+          <span>#{issue.number}</span> created by {issue.author.login}{" "}
+          {timeSince(new Date(issue.createdAt))} ago
+        </i>
       </Col>
       <Col span={24}>
         <p> {parse(issue.bodyHTML)} </p>
