@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
-import { Badge, Button, Table } from "antd";
-import { useHistory } from "react-router-dom";
+import {Badge, Button, Skeleton, Table} from "antd";
+import {Link} from "react-router-dom";
 import { Issue as IssueSchemaType } from "../../SchemaTypes/types";
-import { useQuery } from "@apollo/client";
+import {ApolloClient, useQuery} from "@apollo/client";
 import {
   ISSUE_LIST_QUERY,
   IssueListParam,
@@ -12,6 +12,11 @@ import {
 import { timeSince } from "../../utils/helpers/date";
 import { RightCircleFilled } from "@ant-design/icons";
 import { IssueSearchParam } from "../SearchArea";
+import {
+  ISSUE_DETAILS_PRE_LOAD_QUERY,
+  IssueDetailsPreLoadParam,
+  IssueDetailsPreLoadResponse
+} from "./IssueDetailsPreLoadQuery";
 type IssueSummary = Pick<
   IssueSchemaType,
   | "id"
@@ -29,28 +34,24 @@ type issueListProps = {
 
 type IssueTableProp = {
   data: IssueListResponse;
-  handleClick: (issuenr: number) => void;
   fetchMore: (endCursor: string) => void;
+  client:ApolloClient<any>
 };
 
 const IssueList: FunctionComponent<issueListProps> = ({
   param: { issueState, searchText },
 }) => {
-  const history = useHistory();
-  const handleClick = (id: number) => {
-    history.push(`/issues/${id}`);
-  };
-  const { data, loading, fetchMore } = useQuery<
+  const { data,error, loading, fetchMore , client} = useQuery<
     IssueListResponse,
     IssueListParam
   >(ISSUE_LIST_QUERY, {
     variables: IssueListQueryBuilder({ issueState, searchText }),
   });
   if (!data && loading) {
-    return <>Loading</>;
+    return <Skeleton active />;;
   }
-  if (!loading && !data) {
-    return <>Data laoding error</>;
+  if (error) {
+    return <>Data loading error</>;
   }
   const fetchMoreWrapper = async (endCursor: string): Promise<void> => {
     await fetchMore({
@@ -60,16 +61,16 @@ const IssueList: FunctionComponent<issueListProps> = ({
   return (
     <IssueListTable
       data={data}
-      handleClick={handleClick}
       fetchMore={fetchMoreWrapper}
-    ></IssueListTable>
+      client={client}
+    />
   );
 };
 
 const IssueListTable: FunctionComponent<IssueTableProp> = ({
   data,
-  handleClick,
   fetchMore,
+  client
 }) => {
   return (
     <React.Fragment>
@@ -87,7 +88,21 @@ const IssueListTable: FunctionComponent<IssueTableProp> = ({
           key={"id"}
           render={(text, record: IssueSummary) => (
             <React.Fragment>
-              <a onClick={() => handleClick(record.number)}>{record.title}</a>
+              <Link
+                  to={{
+                    pathname: `issues/${record.number}`,
+                    state: { id: record.number }
+                  }}
+                  onMouseOver={() =>
+                      client.query<IssueDetailsPreLoadResponse,IssueDetailsPreLoadParam>({
+                        query: ISSUE_DETAILS_PRE_LOAD_QUERY,
+                        variables: { issueNumber:record.number },
+                      })
+                  }
+                  style={{ textDecoration: "none" }}
+              >
+                {record.title}
+              </Link>
               <br />
               <span>#{record.number}</span> created by {record.author.login}{" "}
               {timeSince(new Date(record.createdAt))} ago

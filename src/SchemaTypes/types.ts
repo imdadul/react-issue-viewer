@@ -20,7 +20,7 @@ export interface Issue {
   url: string;
   state: string;
   author: User;
-  body: string;
+  bodyHTML: string;
   createdAt: string;
   comments: CommentConnection;
   number: number;
@@ -28,6 +28,8 @@ export interface Issue {
 
 interface Comment {
   id: string;
+  author: User;
+  bodyHTML: string;
 }
 interface User {
   __typename?: "User";

@@ -27,6 +27,10 @@ const initializeApolloCache = (env: ProcessEnvType): InMemoryCache => {
         fields: {
           search: {
             merge(existing, incoming) {
+              // when fetchPolicy: "cache-and-network",
+              // this merge function needs to merge old and new items,
+              // making sure the order of new items
+              // and update cursor information for more query
               let issues: Reference[] = [];
               if (existing && existing.edges) {
                 issues = issues.concat(existing.edges);
@@ -37,25 +41,6 @@ const initializeApolloCache = (env: ProcessEnvType): InMemoryCache => {
               return {
                 ...incoming,
                 edges: issues,
-              };
-            },
-          },
-        },
-      },
-      Issue: {
-        fields: {
-          edges: {
-            merge(existing, incoming) {
-              let issues: Reference[] = [];
-              if (existing && existing.issues) {
-                issues = issues.concat(existing.issues);
-              }
-              if (incoming && incoming.issues) {
-                issues = issues.concat(incoming.issues);
-              }
-              return {
-                ...incoming,
-                issues,
               };
             },
           },
@@ -76,11 +61,11 @@ export const initializeApolloClient: InitializeApolloClient = (
 
   const client = ["production", "development"].includes(env)
     ? new ApolloClient({
-        defaultOptions: {
-          watchQuery: {
-            fetchPolicy: "cache-and-network",
-          },
-        },
+        // defaultOptions: {
+        //   watchQuery: {
+        //     fetchPolicy: "cache-and-network",
+        //   },
+        // },
         link: ApolloLink.from([
           onError(({ graphQLErrors, networkError }) => {
             if (graphQLErrors)

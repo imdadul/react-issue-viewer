@@ -52,6 +52,7 @@
     "@types/react-router-dom": "^5.1.6",
     "antd": "^4.9.0",
     "graphql": "^15.4.0",
+    "html-react-parser": "^0.14.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-router-dom": "^5.2.0"
