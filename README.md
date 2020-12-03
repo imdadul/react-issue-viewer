@@ -14,8 +14,10 @@ User can filter the issues by title/body/issue type. User can also go to the det
 1. `git clone https://github.com/imdadul/react-issue-viewer.git`
 2.  Create `.env` file and put inside the folder. Enter the graph api url and authorization token.
    
-   Example `.env file 
-   REACT_APP_API_URL=https://api.github.com/graphql
-    REACT_APP_TOKEN=GITHUB_PERSONAL_ACCESS_TOKEN` 
+3.   Example `.env file`
+
+   	REACT_APP_API_URL=https://api.github.com/graphql
+   	REACT_APP_TOKEN=GITHUB_PERSONAL_ACCESS_TOKEN
+    
 3. `npm i`
 4. `npm run dev`
