@@ -6,7 +6,7 @@ import { useQuery } from "@apollo/client";
 import { Col, Divider, Row, Skeleton } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
-import { Typography } from 'antd';
+import { Typography } from "antd";
 
 const { Text } = Typography;
 import { Button } from "antd";
@@ -67,7 +67,9 @@ const DetailsComponent: FunctionComponent<{ issue: IssueDetail }> = ({
         <React.Fragment> {parse(issue.bodyHTML)} </React.Fragment>
       </Col>
       <Col span={24}>
-        <h1><Text keyboard>Comments</Text></h1>
+        <h1>
+          <Text keyboard>Comments</Text>
+        </h1>
         {issue.comments.edges.map(({ node: comment }, index) => {
           return (
             <React.Fragment key={index}>

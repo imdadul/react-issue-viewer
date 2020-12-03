@@ -1,7 +1,13 @@
-import {ApolloClient, ApolloLink, HttpLink, NormalizedCacheObject, Reference,} from "@apollo/client";
-import {InMemoryCache} from "@apollo/client/cache";
-import {onError} from "@apollo/client/link/error";
-import {setContext} from "@apollo/client/link/context";
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  NormalizedCacheObject,
+  Reference,
+} from "@apollo/client";
+import { InMemoryCache } from "@apollo/client/cache";
+import { onError } from "@apollo/client/link/error";
+import { setContext } from "@apollo/client/link/context";
 
 export type InitializeApolloClient = () => {
   client: ApolloClient<NormalizedCacheObject>;
