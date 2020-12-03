@@ -1,19 +1,29 @@
 import { gql } from "@apollo/client";
 import { IssueConnection } from "../../SchemaTypes/types";
+import { IssueSearchParam } from "../SearchArea";
 
-export const IssueListQuery = gql`
-  {
-    search(
-      query: "repo:facebook/react in:title in:title in:body Improved \\"memory leak\\""
-      type: ISSUE
-      first: 50
-    ) {
+export const ISSUE_LIST_QUERY = gql`
+  query GetIssueBy($searchText: String!, $first: Int, $after: String) {
+    search(query: $searchText, type: ISSUE, first: $first, after: $after)
+      @connection(key: "search") {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+      }
+      issueCount
       edges {
         node {
           ... on Issue {
             id
-            createdAt
             title
+            url
+            state
+            createdAt
+            author {
+              login
+            }
             comments {
               __typename
               totalCount
@@ -28,8 +38,22 @@ export const IssueListQuery = gql`
 export type IssueStatus = "CLOSED" | "OPEN";
 export type IssueListParam = {
   searchText: string;
-  state: IssueStatus;
+  first: number;
+  after?: string;
 };
 export type IssueListResponse = {
   search: IssueConnection;
+};
+export const IssueListQueryBuilder = (
+  searchParam: IssueSearchParam,
+  endCursor?: string
+): IssueListParam => {
+  const { searchText, issueState } = searchParam;
+  return {
+    first: 20,
+    after: endCursor ? endCursor : null,
+    searchText: `repo:facebook/react ${
+      issueState ? `is:${issueState}` : ``
+    } in:title  in:body ${searchText}`,
+  };
 };

@@ -1,5 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import { initializeApolloClient } from "./Apollo Client";
+import { ApolloProvider } from "@apollo/client";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const { client } = initializeApolloClient("development");
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+  document.getElementById("root")
+);

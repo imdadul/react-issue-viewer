@@ -1,22 +1,44 @@
-import React, { FunctionComponent, useState } from "react";
+import React, {
+  ChangeEvent,
+  FunctionComponent,
+  useEffect,
+  useState,
+} from "react";
 import { Input, Select } from "antd";
 import { IssueStatus } from "./IssueList";
 const { Option } = Select;
 const { Search } = Input;
-
-interface SearchAreaTypes {
-  setSearchState: (searchText: string, issueStatus: IssueStatus) => void;
-}
-const SearchArea: FunctionComponent<SearchAreaTypes> = ({ setSearchState }) => {
-  const [searchText, setSearchText] = useState<string>("");
-  const [selectedIssueState, setSelectedIssueState] = useState<IssueStatus>(
-    null
-  );
-  const onSearch = (e: any) => {
-    setSearchState(searchText, selectedIssueState);
+export type IssueSearchParam = {
+  searchText: string;
+  issueState: IssueStatus;
+};
+export type SearchAreaTypes = {
+  data: IssueSearchParam;
+  setSearchState: (param: IssueSearchParam) => void;
+};
+const SearchArea: FunctionComponent<SearchAreaTypes> = ({
+  data,
+  setSearchState,
+}) => {
+  const { issueState, searchText } = data;
+  const [tempSearchState, setTempSearchState] = useState<string>(searchText);
+  useEffect(() => {
+    setTempSearchState(searchText);
+  }, [searchText]);
+  const onSearch = (e: string) => {
+    setSearchState({
+      ...data,
+      searchText: e,
+    });
   };
-  const handleChange = (e: any) => {
-    setSearchState(searchText, selectedIssueState);
+  const onChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setTempSearchState(event.target.value);
+  };
+  const handleChange = (e: IssueStatus) => {
+    setSearchState({
+      ...data,
+      issueState: e,
+    });
   };
 
   return (
@@ -24,11 +46,13 @@ const SearchArea: FunctionComponent<SearchAreaTypes> = ({ setSearchState }) => {
       <Search
         placeholder="input search text"
         onSearch={onSearch}
+        onChange={onChange}
         enterButton="Search"
+        value={tempSearchState}
         style={{ width: 200 }}
       />
       <Select
-        defaultValue={null}
+        defaultValue={issueState}
         style={{ width: 400 }}
         onChange={handleChange}
       >

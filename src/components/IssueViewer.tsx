@@ -1,16 +1,25 @@
-import React, { FunctionComponent } from "react";
-import SearchArea from "../components/SearchArea";
+import React, { FunctionComponent, useState } from "react";
+import SearchArea, { IssueSearchParam } from "../components/SearchArea";
 import IssueList from "../components/IssueList/IssueList";
 
 const IssueViewer: FunctionComponent = () => {
+  const [searchObj, setSearchObj] = useState<IssueSearchParam>({
+    issueState: null,
+    searchText: "",
+  });
+
   return (
     <React.Fragment>
       <SearchArea
-        setSearchState={(a, b) => {
-          const c = 1;
+        data={{
+          issueState: searchObj.issueState,
+          searchText: searchObj.searchText,
+        }}
+        setSearchState={(data: IssueSearchParam) => {
+          setSearchObj(data);
         }}
       />
-      <IssueList />
+      <IssueList param={searchObj} />
     </React.Fragment>
   );
 };

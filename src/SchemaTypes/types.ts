@@ -13,28 +13,48 @@ export type Scalars = {
   MongoID: any;
 };
 export type Maybe<T> = T | null;
-interface Types {
+export interface Issue {
+  __typename?: "Issue";
   id: string;
   title: string;
+  url: string;
+  state: string;
+  author: User;
   body: string;
   createdAt: string;
   comments: CommentConnection;
+  number: number;
 }
 
 interface Comment {
   id: string;
 }
+interface User {
+  __typename?: "User";
+  login: string;
+}
 export type CommentConnection = {
   __typename?: "CommentConnection";
-  count: Scalars["Int"];
+  totalCount: Scalars["Int"];
   pageInfo: PageInfo;
-  edges: Array<Types>;
+  edges: Array<CommentsEdge>;
 };
 export type IssueConnection = {
   __typename?: "IssueConnection";
-  count: Scalars["Int"];
+  issueCount: Scalars["Int"];
   pageInfo: PageInfo;
-  edges: Array<Types>;
+  edges: Array<IssueEdge>;
+};
+
+export type IssueEdge = {
+  __typename?: "SearchResultItemEdge";
+  node: Issue;
+  cursor: Scalars["String"];
+};
+export type CommentsEdge = {
+  __typename?: "CommentsEdge";
+  node: Comment;
+  cursor: Scalars["String"];
 };
 
 export type PageInfo = {
