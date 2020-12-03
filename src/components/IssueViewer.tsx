@@ -8,7 +8,7 @@ const IssueViewer: FunctionComponent = () => {
   const query = useQueryParam();
   const [searchObj, setSearchObj] = useState<IssueSearchParam>({
     searchText: query.get("searchtext"),
-    issueState: query.get("issuetype") as IssueStatus,
+    issueState: query.get("issuetype") == 'null'? null:query.get("issuetype") as IssueStatus  ,
   });
 
   return (
