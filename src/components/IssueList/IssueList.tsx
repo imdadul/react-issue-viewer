@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
-import {Badge, Button, Skeleton, Table} from "antd";
-import {Link} from "react-router-dom";
+import { Badge, Button, Skeleton, Table } from "antd";
+import { Link } from "react-router-dom";
 import { Issue as IssueSchemaType } from "../../SchemaTypes/types";
-import {ApolloClient, useQuery} from "@apollo/client";
+import { ApolloClient, useQuery } from "@apollo/client";
 import {
   ISSUE_LIST_QUERY,
   IssueListParam,
@@ -15,7 +15,7 @@ import { IssueSearchParam } from "../SearchArea";
 import {
   ISSUE_DETAILS_PRE_LOAD_QUERY,
   IssueDetailsPreLoadParam,
-  IssueDetailsPreLoadResponse
+  IssueDetailsPreLoadResponse,
 } from "./IssueDetailsPreLoadQuery";
 type IssueSummary = Pick<
   IssueSchemaType,
@@ -35,20 +35,20 @@ type issueListProps = {
 type IssueTableProp = {
   data: IssueListResponse;
   fetchMore: (endCursor: string) => void;
-  client:ApolloClient<any>
+  client: ApolloClient<any>;
 };
 
 const IssueList: FunctionComponent<issueListProps> = ({
   param: { issueState, searchText },
 }) => {
-  const { data,error, loading, fetchMore , client} = useQuery<
+  const { data, error, loading, fetchMore, client } = useQuery<
     IssueListResponse,
     IssueListParam
   >(ISSUE_LIST_QUERY, {
     variables: IssueListQueryBuilder({ issueState, searchText }),
   });
   if (!data && loading) {
-    return <Skeleton active />;;
+    return <Skeleton active />;
   }
   if (error) {
     return <>Data loading error</>;
@@ -59,18 +59,14 @@ const IssueList: FunctionComponent<issueListProps> = ({
     });
   };
   return (
-    <IssueListTable
-      data={data}
-      fetchMore={fetchMoreWrapper}
-      client={client}
-    />
+    <IssueListTable data={data} fetchMore={fetchMoreWrapper} client={client} />
   );
 };
 
 const IssueListTable: FunctionComponent<IssueTableProp> = ({
   data,
   fetchMore,
-  client
+  client,
 }) => {
   return (
     <React.Fragment>
@@ -89,17 +85,20 @@ const IssueListTable: FunctionComponent<IssueTableProp> = ({
           render={(text, record: IssueSummary) => (
             <React.Fragment>
               <Link
-                  to={{
-                    pathname: `issues/${record.number}`,
-                    state: { id: record.number }
-                  }}
-                  onMouseOver={() =>
-                      client.query<IssueDetailsPreLoadResponse,IssueDetailsPreLoadParam>({
-                        query: ISSUE_DETAILS_PRE_LOAD_QUERY,
-                        variables: { issueNumber:record.number },
-                      })
-                  }
-                  style={{ textDecoration: "none" }}
+                to={{
+                  pathname: `issues/${record.number}`,
+                  state: { id: record.number },
+                }}
+                onMouseOver={() =>
+                  client.query<
+                    IssueDetailsPreLoadResponse,
+                    IssueDetailsPreLoadParam
+                  >({
+                    query: ISSUE_DETAILS_PRE_LOAD_QUERY,
+                    variables: { issueNumber: record.number },
+                  })
+                }
+                style={{ textDecoration: "none" }}
               >
                 {record.title}
               </Link>

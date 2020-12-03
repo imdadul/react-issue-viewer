@@ -36,7 +36,6 @@ export const ISSUE_LIST_QUERY = gql`
   }
 `;
 
-
 export type IssueStatus = "CLOSED" | "OPEN";
 export type IssueListParam = {
   searchText: string;
