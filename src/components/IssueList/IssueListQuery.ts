@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { IssueConnection } from "../../SchemaTypes/types";
+import { IssueConnection } from "../../schemaTypes/types";
 import { IssueSearchParam } from "../SearchArea";
 
 export const ISSUE_LIST_QUERY = gql`

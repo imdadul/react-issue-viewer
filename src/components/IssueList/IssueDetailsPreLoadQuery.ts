@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { Issue } from "../../SchemaTypes/types";
+import { Issue } from "../../schemaTypes/types";
 
 export const ISSUE_DETAILS_PRE_LOAD_QUERY = gql`
   query GetIssueBy($issueNumber: Int!) {

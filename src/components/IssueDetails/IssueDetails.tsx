@@ -12,7 +12,7 @@ import {
   IssueDetailsParam,
   IssueDetailsResponse,
 } from "./IssueDetailsQuery";
-import { Issue as IssueSchemaType } from "../../SchemaTypes/types";
+import { Issue as IssueSchemaType } from "../../schemaTypes/types";
 import parse from "html-react-parser";
 import { timeSince } from "../../utils/helpers/date";
 

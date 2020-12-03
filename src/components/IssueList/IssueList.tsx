@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Skeleton } from "antd";
-import { Issue as IssueSchemaType } from "../../SchemaTypes/types";
+import { Issue as IssueSchemaType } from "../../schemaTypes/types";
 import { useQuery } from "@apollo/client";
 import {
   ISSUE_LIST_QUERY,
