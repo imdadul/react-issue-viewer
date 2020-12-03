@@ -5,7 +5,7 @@ import { IssueSearchParam } from "../SearchArea";
 export const ISSUE_LIST_QUERY = gql`
   query GetIssueBy($searchText: String!, $first: Int, $after: String) {
     search(query: $searchText, type: ISSUE, first: $first, after: $after)
-      @connection(key: "search") {
+      @connection(key: "search", filter: ["query"]) {
       pageInfo {
         endCursor
         hasNextPage

@@ -45,9 +45,8 @@ const IssueList: FunctionComponent<issueListProps> = ({
     IssueListParam
   >(ISSUE_LIST_QUERY, {
     variables: IssueListQueryBuilder({ issueState, searchText }),
-    fetchPolicy: "cache-and-network",
   });
-  if (loading) {
+  if (!data && loading) {
     return <>Loading</>;
   }
   if (!loading && !data) {
@@ -55,10 +54,7 @@ const IssueList: FunctionComponent<issueListProps> = ({
   }
   const fetchMoreWrapper = async (endCursor: string): Promise<void> => {
     await fetchMore({
-      variables: IssueListQueryBuilder(
-        { issueState, searchText },
-        endCursor
-      ),
+      variables: IssueListQueryBuilder({ issueState, searchText }, endCursor),
     });
   };
   return (

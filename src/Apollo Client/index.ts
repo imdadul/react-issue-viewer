@@ -8,7 +8,7 @@ import {
 import { InMemoryCache } from "@apollo/client/cache";
 import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
-import * as config from "../../config"
+import * as config from "../../config";
 export type ProcessEnvType = "test" | "production" | "development";
 
 export type InitializeApolloClient = (
@@ -72,10 +72,15 @@ export const initializeApolloClient: InitializeApolloClient = (
 ) => {
   const cache = initializeApolloCache(env);
   const API_URL = config.API_URL;
-  const TOKEN = "bearer "+config.TOKEN;
+  const TOKEN = "bearer " + config.TOKEN;
 
   const client = ["production", "development"].includes(env)
     ? new ApolloClient({
+        defaultOptions: {
+          watchQuery: {
+            fetchPolicy: "cache-and-network",
+          },
+        },
         link: ApolloLink.from([
           onError(({ graphQLErrors, networkError }) => {
             if (graphQLErrors)

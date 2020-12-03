@@ -44,12 +44,12 @@ const SearchArea: FunctionComponent<SearchAreaTypes> = ({
   return (
     <React.Fragment>
       <Search
-        placeholder="input search text"
+        placeholder="Search text in title/body"
         onSearch={onSearch}
         onChange={onChange}
         enterButton="Search"
         value={tempSearchState}
-        style={{ width: 200 }}
+        style={{ width: "30%" }}
       />
       <Select
         defaultValue={issueState}

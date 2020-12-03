@@ -24,7 +24,7 @@ doc/
 .DS_Store
 .idea
 .secret
-.config.js
+config.js
 
 
 node_modules
