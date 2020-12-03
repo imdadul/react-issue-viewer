@@ -14,7 +14,8 @@
     "start": "webpack serve",
     "start:prod": "NODE_ENV=production webpack serve",
     "build": "webpack --mode production",
-    "lint": "eslint '*/**/*.{ts,tsx}' --quiet --fix"
+    "lint": "eslint '*/**/*.{ts,tsx}' --quiet --fix",
+    "heroku-prebuild": "npm install --dev"
   },
   "license": "MIT",
   "devDependencies": {
