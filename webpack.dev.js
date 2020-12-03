@@ -6,7 +6,6 @@ const DotenvWebpack = require('dotenv-webpack');
 const rootDir = path.resolve(__dirname, './');
 const envFile = '.env';
 const envVars = dotenv.config({ path: path.resolve(rootDir,envFile ) });
-console.log('envVars ' +envVars.TOKEN)
 if (envVars.error) {
     throw envVars.error;
 }
