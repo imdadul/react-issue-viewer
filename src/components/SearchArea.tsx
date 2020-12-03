@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { useHistory } from "react-router-dom";
 import { Input, Select } from "antd";
 import { IssueStatus } from "./IssueList";
 const { Option } = Select;
@@ -16,20 +17,28 @@ export type SearchAreaTypes = {
   data: IssueSearchParam;
   setSearchState: (param: IssueSearchParam) => void;
 };
+
 const SearchArea: FunctionComponent<SearchAreaTypes> = ({
   data,
   setSearchState,
 }) => {
+  const history = useHistory();
   const { issueState, searchText } = data;
   const [tempSearchState, setTempSearchState] = useState<string>(searchText);
   useEffect(() => {
     setTempSearchState(searchText);
   }, [searchText]);
+  const updateHistory = (searchText: string, issueState: string) => {
+    history.push({
+      search: `?searchtext=${searchText}&issuetype=${issueState}`,
+    });
+  };
   const onSearch = (e: string) => {
     setSearchState({
       ...data,
       searchText: e,
     });
+    updateHistory(e, issueState);
   };
   const onChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setTempSearchState(event.target.value);
@@ -39,6 +48,7 @@ const SearchArea: FunctionComponent<SearchAreaTypes> = ({
       ...data,
       issueState: e,
     });
+    updateHistory(searchText, e);
   };
 
   return (

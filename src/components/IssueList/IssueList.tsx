@@ -1,23 +1,16 @@
 import React, { FunctionComponent } from "react";
-import { Badge, Button, Skeleton, Table } from "antd";
-import { Link } from "react-router-dom";
+import { Skeleton } from "antd";
 import { Issue as IssueSchemaType } from "../../SchemaTypes/types";
-import { ApolloClient, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import {
   ISSUE_LIST_QUERY,
   IssueListParam,
   IssueListQueryBuilder,
   IssueListResponse,
 } from "./IssueListQuery";
-import { timeSince } from "../../utils/helpers/date";
-import { RightCircleFilled } from "@ant-design/icons";
 import { IssueSearchParam } from "../SearchArea";
-import {
-  ISSUE_DETAILS_PRE_LOAD_QUERY,
-  IssueDetailsPreLoadParam,
-  IssueDetailsPreLoadResponse,
-} from "./IssueDetailsPreLoadQuery";
-type IssueSummary = Pick<
+import { IssueListTable } from "./IssueListTable";
+export type IssueSummary = Pick<
   IssueSchemaType,
   | "id"
   | "title"
@@ -30,12 +23,6 @@ type IssueSummary = Pick<
 >;
 type issueListProps = {
   param: IssueSearchParam;
-};
-
-type IssueTableProp = {
-  data: IssueListResponse;
-  fetchMore: (endCursor: string) => void;
-  client: ApolloClient<any>;
 };
 
 const IssueList: FunctionComponent<issueListProps> = ({
@@ -60,84 +47,6 @@ const IssueList: FunctionComponent<issueListProps> = ({
   };
   return (
     <IssueListTable data={data} fetchMore={fetchMoreWrapper} client={client} />
-  );
-};
-
-const IssueListTable: FunctionComponent<IssueTableProp> = ({
-  data,
-  fetchMore,
-  client,
-}) => {
-  return (
-    <React.Fragment>
-      <Table<IssueSummary>
-        dataSource={data.search.edges
-          .map((e) => e.node)
-          .filter((e) => e.__typename == "Issue")}
-        pagination={false}
-        scroll={{
-          scrollToFirstRowOnChange: false,
-        }}
-      >
-        <Table.Column
-          title="Title"
-          key={"id"}
-          render={(text, record: IssueSummary) => (
-            <React.Fragment>
-              <Link
-                to={{
-                  pathname: `issues/${record.number}`,
-                  state: { id: record.number },
-                }}
-                onMouseOver={() =>
-                  client.query<
-                    IssueDetailsPreLoadResponse,
-                    IssueDetailsPreLoadParam
-                  >({
-                    query: ISSUE_DETAILS_PRE_LOAD_QUERY,
-                    variables: { issueNumber: record.number },
-                  })
-                }
-                style={{ textDecoration: "none" }}
-              >
-                {record.title}
-              </Link>
-              <br />
-              <span>#{record.number}</span> created by {record.author.login}{" "}
-              {timeSince(new Date(record.createdAt))} ago
-              <br />
-              {record.state == "CLOSED" && <Badge count={"Closed"} />}
-              {record.state == "OPEN" && (
-                <Badge
-                  className="site-badge-count-109"
-                  count={"Open"}
-                  style={{ backgroundColor: "#35900b" }}
-                />
-              )}
-              {record.comments.totalCount > 0 && (
-                <Badge
-                  count={"comments " + record.comments.totalCount}
-                  style={{ backgroundColor: "#a19f9a" }}
-                  className="site-badge-count-4"
-                />
-              )}
-            </React.Fragment>
-          )}
-        />
-      </Table>
-      <div className="h-center">
-        {data.search.pageInfo.hasNextPage && (
-          <Button
-            size={"large"}
-            type="primary"
-            onClick={() => fetchMore(data.search.pageInfo.endCursor)}
-            icon={<RightCircleFilled />}
-          >
-            Load More
-          </Button>
-        )}
-      </div>
-    </React.Fragment>
   );
 };
 export default IssueList;

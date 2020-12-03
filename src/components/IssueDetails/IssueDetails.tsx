@@ -32,7 +32,7 @@ export const IssueDetails: FunctionComponent = () => {
   if (error) {
     return <>Data loading error</>;
   }
-  return <DetailsComponent issue={data.repository.issue}/>;
+  return <DetailsComponent issue={data.repository.issue} />;
 };
 
 const DetailsComponent: FunctionComponent<{ issue: IssueDetail }> = ({
@@ -61,7 +61,7 @@ const DetailsComponent: FunctionComponent<{ issue: IssueDetail }> = ({
         </i>
       </Col>
       <Col span={24}>
-        <p> {parse(issue.bodyHTML)} </p>
+        <React.Fragment> {parse(issue.bodyHTML)} </React.Fragment>
       </Col>
       <Col span={24}>
         <Divider orientation="left">Comments</Divider>
@@ -72,7 +72,7 @@ const DetailsComponent: FunctionComponent<{ issue: IssueDetail }> = ({
                 {comment.author.login} replied
               </Divider>
               <br />
-              <p> {parse(comment.bodyHTML)} </p>
+              <React.Fragment> {parse(comment.bodyHTML)} </React.Fragment>
             </React.Fragment>
           );
         })}

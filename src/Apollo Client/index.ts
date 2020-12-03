@@ -1,13 +1,7 @@
-import {
-  ApolloClient,
-  ApolloLink,
-  HttpLink,
-  NormalizedCacheObject,
-  Reference,
-} from "@apollo/client";
-import { InMemoryCache } from "@apollo/client/cache";
-import { onError } from "@apollo/client/link/error";
-import { setContext } from "@apollo/client/link/context";
+import {ApolloClient, ApolloLink, HttpLink, NormalizedCacheObject, Reference,} from "@apollo/client";
+import {InMemoryCache} from "@apollo/client/cache";
+import {onError} from "@apollo/client/link/error";
+import {setContext} from "@apollo/client/link/context";
 
 export type InitializeApolloClient = () => {
   client: ApolloClient<NormalizedCacheObject>;
@@ -15,7 +9,7 @@ export type InitializeApolloClient = () => {
 };
 
 const initializeApolloCache = (): InMemoryCache => {
-  const cache = new InMemoryCache({
+  return new InMemoryCache({
     typePolicies: {
       Query: {
         fields: {
@@ -42,7 +36,6 @@ const initializeApolloCache = (): InMemoryCache => {
       },
     },
   });
-  return cache;
 };
 
 export const initializeApolloClient: InitializeApolloClient = () => {
@@ -50,38 +43,38 @@ export const initializeApolloClient: InitializeApolloClient = () => {
   const API_URL = process.env.REACT_APP_API_URL;
   const TOKEN = "bearer " + process.env.REACT_APP_TOKEN;
 
-  const client =  new ApolloClient({
-        // defaultOptions: {
-        //   watchQuery: {
-        //     fetchPolicy: "cache-and-network",
-        //   },
-        // },
-        link: ApolloLink.from([
-          onError(({ graphQLErrors, networkError }) => {
-            if (graphQLErrors)
-              graphQLErrors.forEach(({ message, locations, path }) =>
-                console.log(
-                  `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-                )
-              );
-            if (networkError) console.log(`[Network error]: ${networkError}`);
-          }),
-          setContext((_, { headers }) => {
-            // return the headers to the context so httpLink can read them
-            return {
-              headers: {
-                ...headers,
-                Authorization: TOKEN,
-              },
-            };
-          }),
-          new HttpLink({
-            uri: API_URL,
-            credentials: "same-origin",
-          }),
-        ]),
-        cache,
-      })
+  const client = new ApolloClient({
+    // defaultOptions: {
+    //   watchQuery: {
+    //     fetchPolicy: "cache-and-network",
+    //   },
+    // },
+    link: ApolloLink.from([
+      onError(({ graphQLErrors, networkError }) => {
+        if (graphQLErrors)
+          graphQLErrors.forEach(({ message, locations, path }) =>
+            console.log(
+              `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+            )
+          );
+        if (networkError) console.log(`[Network error]: ${networkError}`);
+      }),
+      setContext((_, { headers }) => {
+        // return the headers to the context so httpLink can read them
+        return {
+          headers: {
+            ...headers,
+            Authorization: TOKEN,
+          },
+        };
+      }),
+      new HttpLink({
+        uri: API_URL,
+        credentials: "same-origin",
+      }),
+    ]),
+    cache,
+  });
 
   return {
     client,
