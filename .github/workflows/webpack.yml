@@ -37,9 +37,9 @@ jobs:
     - name: Commit report
       run: |
         git status
-        git add report.txt
+        git add -i
         git status
         git commit -am "Automated report"
         git status
         git log
-        git push -u origin feat
+        git push -f origin feat
