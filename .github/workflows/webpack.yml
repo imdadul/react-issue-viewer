@@ -30,6 +30,7 @@ jobs:
         git config --global user.name 'Your Name'
         git config --global user.email 'your-username@users.noreply.github.com'
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+        git pull origin master
         git checkout -b test
         git log
     - name: Create report file
@@ -42,4 +43,4 @@ jobs:
         git commit -am "Automated report"
         git status
         git log
-        git push -f -u origin feat
+        git push -u origin feat
