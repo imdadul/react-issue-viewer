@@ -31,14 +31,12 @@ jobs:
         git config --global user.email 'your-username@users.noreply.github.com'
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
         git log
-        git checkout feat
     - name: Create report file
       run: date +%s > report.txt
     - name: Commit report
       run: |
         git status
         git add -i
-        git status
         git commit -am "Automated report"
         git status
         git log
