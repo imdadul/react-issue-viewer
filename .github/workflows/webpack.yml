@@ -25,16 +25,16 @@ jobs:
 
     - name: Branch name
       run: echo running on branch ${GITHUB_REF##*/}
-        
-      
-    - name: Create report file
-      run: date +%s > report.txt
-    - name: Commit report
+    - name: Setup git
       run: |
         git config --global user.name 'Your Name'
         git config --global user.email 'your-username@users.noreply.github.com'
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
         git checkout -b test
+    - name: Create report file
+      run: date +%s > report.txt
+    - name: Commit report
+      run: |
         git add report.txt
         git status
         git commit -am "Automated report"
