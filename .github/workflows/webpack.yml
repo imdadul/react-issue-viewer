@@ -38,4 +38,4 @@ jobs:
         git add report.txt
         git status
         git commit -am "Automated report"
-        git push -u origin feat
+        git push -f -u origin feat
