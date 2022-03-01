@@ -16,28 +16,12 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-      with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-
-    - name: Branch name
-      run: echo running on branch ${GITHUB_REF##*/}
-    - name: Setup git
-      run: |
-        git config --global user.name 'Your Name'
-        git config --global user.email 'your-username@users.noreply.github.com'
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-        git log
-    - name: Create report file
-      run: date +%s > report.txt
     - name: Commit report
-      run: |
-        git status
-        git add report.txt
-        git commit -am "Automated report"
-        git status
-        git log
-        git push -f origin feat
+    - run: |
+        date > generated.txt
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add .
+        git commit -m "generated"
+        git push
+
