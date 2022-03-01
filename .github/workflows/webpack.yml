@@ -23,4 +23,4 @@ jobs:
         git config user.email github-actions@github.com
         git add .
         git commit -m "generated"
-        git push origin HEAD:feat
+        git push -f origin HEAD:feat
