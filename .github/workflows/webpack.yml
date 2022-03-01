@@ -36,7 +36,7 @@ jobs:
     - name: Commit report
       run: |
         git status
-        git add -i
+        git add report.txt
         git commit -am "Automated report"
         git status
         git log
