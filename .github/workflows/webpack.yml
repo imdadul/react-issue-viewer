@@ -13,7 +13,7 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2
-    - name: <
+    - name: Release commit
       run: |
         echo "After release commit" > file.txt
         git config user.name github-actions
